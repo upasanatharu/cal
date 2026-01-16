@@ -1,15 +1,33 @@
 export const dynamic = 'force-dynamic';
-import { db } from "@/lib/mock-db";
-// import { prisma } from "@/lib/prisma"; // ❌ Commented out to stop localhost crashes
+// import { db } from "@/lib/mock-db";
+import { prisma } from "@/lib/prisma"; // ❌ Commented out to stop localhost crashes
 import CancelBookingButton from "./components/CancelBookingButton";
 
 export default async function BookingsPage() {
+  /*
   // MOCK DATA - via lib/mock-db
-  const allBookings = await db.getBookingsForUser(1);
+  const bookings = await db.getBookingsForUser(1);
+  const user = { username: "kavya" }; // Mock user
+  */
+
+  // User 1 only
+  const bookings = await prisma.booking.findMany({
+    where: {
+      eventType: {
+        userId: 1,
+      },
+    },
+    include: {
+      eventType: true,
+    },
+    orderBy: {
+      startTime: "asc",
+    },
+  });
 
   const now = new Date();
-  const upcoming = allBookings.filter((b) => new Date(b.startTime) >= now);
-  const past = allBookings.filter((b) => new Date(b.startTime) < now);
+  const upcoming = bookings.filter((b) => new Date(b.startTime) >= now);
+  const past = bookings.filter((b) => new Date(b.startTime) < now);
 
   const formatDateTime = (date: Date) => {
     const d = new Date(date);
@@ -41,7 +59,7 @@ export default async function BookingsPage() {
                           <span className="text-sm text-gray-400">{booking.bookerEmail}</span>
                         </div>
                         <div className="space-y-1 text-sm text-gray-400">
-                          <p><span className="font-medium text-gray-300">Event:</span> {booking.eventTypeTitle}</p>
+                          <p><span className="font-medium text-gray-300">Event:</span> {booking.eventType.title}</p>
                           <p><span className="font-medium text-gray-300">Date:</span> {date}</p>
                           <p><span className="font-medium text-gray-300">Time:</span> {time}</p>
                         </div>
@@ -72,7 +90,7 @@ export default async function BookingsPage() {
                           <span className="text-sm text-gray-400">{booking.bookerEmail}</span>
                         </div>
                         <div className="space-y-1 text-sm text-gray-400">
-                          <p><span className="font-medium text-gray-300">Event:</span> {booking.eventTypeTitle}</p>
+                          <p><span className="font-medium text-gray-300">Event:</span> {booking.eventType.title}</p>
                           <p><span className="font-medium text-gray-300">Date:</span> {date}</p>
                           <p><span className="font-medium text-gray-300">Time:</span> {time}</p>
                         </div>

@@ -1,6 +1,6 @@
 "use server";
 
-import { db } from "@/lib/mock-db";
+import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
@@ -22,13 +22,33 @@ export async function createBooking({
   try {
     const endTime = new Date(startTime.getTime() + duration * 60 * 1000);
 
-    // MOCK DATA - Persist to shared memory
-    await db.createBooking({
-      eventTypeId,
-      bookerName: name,
-      bookerEmail: email,
-      startTime,
-      endTime,
+    // Check for overlapping bookings
+    const overlappingBooking = await prisma.booking.findFirst({
+      where: {
+        eventTypeId: eventTypeId,
+        AND: [
+          { startTime: { lt: endTime } },
+          { endTime: { gt: startTime } },
+        ],
+      },
+    });
+
+    if (overlappingBooking) {
+      return {
+        success: false,
+        error: "This time slot is already booked. Please select another time.",
+      };
+    }
+
+    // Create the booking
+    await prisma.booking.create({
+      data: {
+        eventTypeId,
+        bookerName: name,
+        bookerEmail: email,
+        startTime,
+        endTime,
+      },
     });
 
     revalidatePath("/[username]/[slug]", "page");
@@ -43,7 +63,11 @@ export async function createBooking({
 
 export async function cancelBooking(bookingId: number) {
   try {
-    await db.deleteBooking(bookingId);
+    await prisma.booking.delete({
+      where: {
+        id: bookingId,
+      },
+    });
 
     revalidatePath("/bookings");
     return { success: true };
@@ -69,12 +93,27 @@ export async function createEventType({
   description,
 }: CreateEventTypeInput) {
   try {
-    await db.createEventType({
-      title,
-      slug,
-      duration,
-      description: description || "",
-      userId: 1
+    // Check if slug already exists
+    const existingEventType = await prisma.eventType.findUnique({
+      where: { slug },
+    });
+
+    if (existingEventType) {
+      return {
+        success: false,
+        error: "A event type with this slug already exists. Please choose a different slug.",
+      };
+    }
+
+    // Create the event type for User 1
+    await prisma.eventType.create({
+      data: {
+        title,
+        slug,
+        duration,
+        description,
+        userId: 1,
+      },
     });
 
     revalidatePath("/");

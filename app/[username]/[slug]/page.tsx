@@ -1,5 +1,5 @@
-import { db } from "@/lib/mock-db";
-// import { prisma } from "@/lib/prisma";
+// import { db } from "@/lib/mock-db";
+import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import BookingCalendar from "@/app/components/BookingCalendar";
 
@@ -13,6 +13,7 @@ interface PageProps {
 export default async function BookingPage({ params }: PageProps) {
   const { username, slug } = await params;
 
+  /*
   // MOCK DATA - via lib/mock-db
   const eventTypeRecord = await db.getEventTypeBySlug(username, slug);
 
@@ -26,6 +27,16 @@ export default async function BookingPage({ params }: PageProps) {
       username: username,
     },
   };
+  */
+
+  const eventType = await prisma.eventType.findUnique({
+    where: {
+      slug: slug,
+    },
+    include: {
+      user: true,
+    },
+  });
   /*
   const eventType = await prisma.eventType.findUnique({
     where: {

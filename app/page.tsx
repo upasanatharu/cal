@@ -1,36 +1,33 @@
 export const dynamic = 'force-dynamic';
-import { db } from "@/lib/mock-db";
-// import { prisma } from "@/lib/prisma"; 
+// import { db } from "@/lib/mock-db";
+import { prisma } from "@/lib/prisma";
 import CopyLinkButton from "./components/CopyLinkButton";
 
 export default async function Home() {
+  /*
   // MOCK DATA - via lib/mock-db
   const userRecord = await db.getUser(1);
   const eventTypes = await db.getAllEventTypes(1);
 
   if (!userRecord) {
-    return <div className="text-white p-10">User not found</div>;
+     return <div className="text-white p-10">User not found</div>;
   }
-
+  
   const user = {
     ...userRecord,
     eventTypes: eventTypes
   };
-
-  /*
-  // OLD LOCAL MOCK
-  const user = {
-    id: "1", ...
-  };
   */
 
-  // We are skipping the DB call entirely for now to get you back to 'Working'
-  /*
-  const userFromDb = await prisma.user.findUnique({
-    where: { id: "1" }, 
+  const user = await prisma.user.findUnique({
+    where: { id: 1 },
     include: { eventTypes: true },
   });
-  */
+
+  if (!user) {
+    return <div className="text-white p-10">User not found. Please run the seed script.</div>;
+  }
+
 
   return (
     <div className="px-4 py-8 sm:px-6 lg:px-8 bg-black min-h-screen">
