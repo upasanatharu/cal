@@ -1,4 +1,5 @@
-import { prisma } from "@/lib/prisma";
+import { db } from "@/lib/mock-db";
+// import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import BookingCalendar from "@/app/components/BookingCalendar";
 
@@ -12,13 +13,15 @@ interface PageProps {
 export default async function BookingPage({ params }: PageProps) {
   const { username, slug } = await params;
 
-  // MOCK DATA - Bypassing DB for development
+  // MOCK DATA - via lib/mock-db
+  const eventTypeRecord = await db.getEventTypeBySlug(username, slug);
+
+  if (!eventTypeRecord) {
+    notFound();
+  }
+
   const eventType = {
-    id: 1,
-    title: "30 Min Meeting",
-    slug: slug,
-    duration: 30,
-    description: "A quick catch-up or intro call.",
+    ...eventTypeRecord,
     user: {
       username: username,
     },

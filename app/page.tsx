@@ -1,30 +1,28 @@
 export const dynamic = 'force-dynamic';
-// 1. Remove or comment out the prisma import to stop the connection crash
+import { db } from "@/lib/mock-db";
 // import { prisma } from "@/lib/prisma"; 
 import CopyLinkButton from "./components/CopyLinkButton";
 
 export default async function Home() {
-  // MOCK DATA - Guaranteed to work regardless of DB status
+  // MOCK DATA - via lib/mock-db
+  const userRecord = await db.getUser(1);
+  const eventTypes = await db.getAllEventTypes(1);
+
+  if (!userRecord) {
+    return <div className="text-white p-10">User not found</div>;
+  }
+
   const user = {
-    id: "1", // Changed to String to match standard Supabase IDs
-    username: "kavya",
-    eventTypes: [
-      {
-        id: "1",
-        title: "30 Min Meeting",
-        slug: "30-min",
-        duration: 30,
-        description: "A quick catch-up or intro call.",
-      },
-      {
-        id: "2",
-        title: "Consultation",
-        slug: "consultation",
-        duration: 60,
-        description: "Deep dive into your project.",
-      },
-    ],
+    ...userRecord,
+    eventTypes: eventTypes
   };
+
+  /*
+  // OLD LOCAL MOCK
+  const user = {
+    id: "1", ...
+  };
+  */
 
   // We are skipping the DB call entirely for now to get you back to 'Working'
   /*
