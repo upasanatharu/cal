@@ -1,90 +1,145 @@
 # Cal Clone 🗓️
 
-A powerful and open-source scheduling platform clone, built with modern web technologies. Streamline your meeting coordination with ease.
+<div align="center">
+
+![Next.js](https://img.shields.io/badge/Next.js-15-black?style=for-the-badge&logo=next.js&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=for-the-badge&logo=typescript&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![Prisma](https://img.shields.io/badge/Prisma-5-2D3748?style=for-the-badge&logo=prisma&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)
+
+<br />
+
+**A powerful, open-source scheduling infrastructure for everyone.**
+<br />
+Seamlessly manage availability, bookings, and event types with a modern, high-performance interface.
+
+[Features](#-features) • [Tech Stack](#-tech-stack) • [Getting Started](#-getting-started) • [Project Structure](#-project-structure) • [Deployment](#-deployment)
+
+</div>
+
+---
 
 ## 🚀 Features
 
--   **Seamless Booking**: Easy-to-use interface for scheduling meetings.
--   **Custom Event Types**: Create various meeting types (e.g., 15 min, 30 min) with custom durations and descriptions.
--   **Availability Management**: Define your working hours and availability.
--   **Real-time Database**: Powered by Supabase/PostgreSQL for reliable data persistence.
--   **Responsive Design**: Optimized for all devices using Tailwind CSS.
+This project serves as a robust foundation for scheduling applications, cloning core functionalities of popular tools like Calendly.
+
+-   **📅 seamless Booking System**: Intuitive interface for users to book appointments.
+-   **🎨 Custom Event Types**: Flexible configuration for meeting durations (15m, 30m, etc.) and descriptions.
+-   **⏱️ Availability Management**: sophisticated controls for setting weekly working hours.
+-   **⚡ Real-time Performance**: Powered by Supabase and Prisma for instant data updates.
+-   **📱 Responsive & Accessible**: Fully responsive UI built with Tailwind CSS, accessible on interactions.
 
 ## 🛠️ Tech Stack
 
--   **Framework**: [Next.js 15+](https://nextjs.org/) (App Router)
--   **Language**: [TypeScript](https://www.typescriptlang.org/)
--   **Styling**: [Tailwind CSS](https://tailwindcss.com/)
--   **Database**: [PostgreSQL](https://www.postgresql.org/) (via [Supabase](https://supabase.com/))
--   **ORM**: [Prisma](https://www.prisma.io/)
+Built with the latest web standards for performance and scalability.
+
+| Category | Technology | Description |
+| :--- | :--- | :--- |
+| **Framework** | [Next.js 15](https://nextjs.org/) | App Router for modern routing and SSR. |
+| **Language** | [TypeScript](https://www.typescriptlang.org/) | Type-safe code for better maintainability. |
+| **Styling** | [Tailwind CSS](https://tailwindcss.com/) | Utility-first CSS for rapid UI development. |
+| **Database** | [PostgreSQL](https://www.postgresql.org/) | Robust relational database. |
+| **ORM** | [Prisma](https://www.prisma.io/) | Next-generation ORM for Node.js and TypeScript. |
+| **Cloud** | [Supabase](https://supabase.com/) | Backend-as-a-Service for database hosting. |
+
+## 📂 Project Structure
+
+A quick look at the top-level directory structure.
+
+```txt
+cal-clone/
+├── app/                  # Next.js App Router pages and layouts
+│   ├── actions.ts        # Server Actions for mutations
+│   ├── bookings/         # Booking management routes
+│   └── [username]/       # Dynamic public profile pages
+├── components/           # Reusable UI components
+├── lib/                  # Utility functions and shared logic
+│   └── prisma.ts         # Prisma client instantiation
+├── prisma/               # Database schema and seeds
+│   ├── schema.prisma     # Data model definition
+│   └── seed.ts           # Database seeding script
+├── public/               # Static assets
+└── ...
+```
 
 ## 🏁 Getting Started
 
-Follow these steps to get the project running on your local machine.
+Follow these steps to set up the project locally.
 
 ### Prerequisites
 
--   [Node.js](https://nodejs.org/) (v18 or higher)
--   A [Supabase](https://supabase.com/) account (or any PostgreSQL database)
+Ensure you have the following installed:
+-   **Node.js** (v18+)
+-   **npm** or **yarn** or **pnpm**
+-   A **Supabase** project (or any PostgreSQL instance)
 
-### Installation
+### 1. Clone the Repository
 
-1.  **Clone the repository:**
+```bash
+git clone https://github.com/upasanatharu/cal.git
+cd cal_clone-main
+```
 
-    ```bash
-    git clone https://github.com/upasanatharu/cal.git
-    cd cal_clone-main
-    ```
+### 2. Install Dependencies
 
-2.  **Install dependencies:**
+```bash
+npm install
+```
 
-    ```bash
-    npm install
-    ```
+### 3. Environment Configuration
 
-3.  **Environment Setup:**
+Create a `.env` file in the root directory. You can duplicate a `.env.example` if available, or use the template below:
 
-    Create a `.env` file in the root directory and add your database connection strings:
+```env
+# Connect to Supabase via connection pooling
+DATABASE_URL="postgresql://postgres.[ref]:[password]@aws-0-region.pooler.supabase.com:6543/postgres?pgbouncer=true"
 
-    ```env
-    # Connect to Supabase via connection pooling
-    DATABASE_URL="postgresql://postgres.[ref]:[password]@aws-0-region.pooler.supabase.com:6543/postgres?pgbouncer=true"
+# Direct connection (Required for migrations)
+DIRECT_URL="postgresql://postgres.[ref]:[password]@aws-0-region.pooler.supabase.com:5432/postgres"
+```
 
-    # Direct connection to the database (Required for migrations)
-    DIRECT_URL="postgresql://postgres.[ref]:[password]@aws-0-region.pooler.supabase.com:5432/postgres"
-    ```
+### 4. Database Setup
 
-4.  **Database Setup:**
+Initialize your database schema and seed it with default data.
 
-    Push the schema to your database and seed it with initial data (creates default user and events).
+```bash
+# Push schema to database
+npx prisma db push
 
-    ```bash
-    # Push schema
-    npx prisma db push
+# Seed with initial data (creates default user 'upasana')
+npx prisma db seed
+```
 
-    # Seed database
-    npx prisma db seed
-    ```
+### 5. Run the Application
 
-    > **Note:** The seed script creates a default user `upasana` with email `admin@cal.com`.
+Start the development server.
 
-5.  **Run the Application:**
+```bash
+npm run dev
+```
 
-    ```bash
-    npm run dev
-    ```
-
-    Open [http://localhost:3000](http://localhost:3000) in your browser.
+Visit `http://localhost:3000` to view the application.
 
 ## 🚀 Deployment
 
-The easiest way to deploy is using [Vercel](https://vercel.com/).
+### Vercel (Recommended)
 
-1.  Push your code to a GitHub repository.
-2.  Import the project into Vercel.
-3.  Add the `DATABASE_URL` and `DIRECT_URL` environment variables in the Vercel dashboard.
-4.  Deploy!
+1.  Push your code to [GitHub](https://github.com/).
+2.  Import your project into [Vercel](https://vercel.com/).
+3.  Add the `DATABASE_URL` and `DIRECT_URL` in the **Environment Variables** settings.
+4.  Click **Deploy**.
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+We welcome contributions! Please see our [CONTRIBUTING.md](CONTRIBUTING.md) for details on how to get started.
+
+1.  Fork the Project
+2.  Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3.  Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4.  Push to the Branch (`git push origin feature/AmazingFeature`)
+5.  Open a Pull Request
+
+## 📄 License
+
+Distributed under the MIT License. See `LICENSE` for more information.
