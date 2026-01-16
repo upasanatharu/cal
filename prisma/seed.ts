@@ -5,9 +5,11 @@ async function main() {
   // 1. Create the Admin User (ID: 1)
   const user = await prisma.user.upsert({
     where: { email: "admin@cal.com" },
-    update: {},
+    update: {
+      username: "upasana",
+    },
     create: {
-      username: "kavya",
+      username: "upasana",
       email: "admin@cal.com",
       // 2. Create default "Work Hours" (9am - 5pm, Mon-Fri)
       availabilities: {
