@@ -100,7 +100,7 @@ export default function EventTypeForm() {
         </label>
         <div className="flex rounded-md shadow-sm">
           <span className="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-700 bg-gray-800 text-gray-400 sm:text-sm">
-            localhost:3000/kavya/
+            localhost:3000/upasana/
           </span>
           <input
             type="text"
