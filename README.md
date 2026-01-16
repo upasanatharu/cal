@@ -1,37 +1,90 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Cal Clone 🗓️
 
-## Getting Started
+A powerful and open-source scheduling platform clone, built with modern web technologies. Streamline your meeting coordination with ease.
 
-First, run the development server:
+## 🚀 Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+-   **Seamless Booking**: Easy-to-use interface for scheduling meetings.
+-   **Custom Event Types**: Create various meeting types (e.g., 15 min, 30 min) with custom durations and descriptions.
+-   **Availability Management**: Define your working hours and availability.
+-   **Real-time Database**: Powered by Supabase/PostgreSQL for reliable data persistence.
+-   **Responsive Design**: Optimized for all devices using Tailwind CSS.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🛠️ Tech Stack
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+-   **Framework**: [Next.js 15+](https://nextjs.org/) (App Router)
+-   **Language**: [TypeScript](https://www.typescriptlang.org/)
+-   **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+-   **Database**: [PostgreSQL](https://www.postgresql.org/) (via [Supabase](https://supabase.com/))
+-   **ORM**: [Prisma](https://www.prisma.io/)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🏁 Getting Started
 
-## Learn More
+Follow these steps to get the project running on your local machine.
 
-To learn more about Next.js, take a look at the following resources:
+### Prerequisites
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+-   [Node.js](https://nodejs.org/) (v18 or higher)
+-   A [Supabase](https://supabase.com/) account (or any PostgreSQL database)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Installation
 
-## Deploy on Vercel
+1.  **Clone the repository:**
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+    ```bash
+    git clone https://github.com/upasanatharu/cal.git
+    cd cal_clone-main
+    ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-# cal_clone
+2.  **Install dependencies:**
+
+    ```bash
+    npm install
+    ```
+
+3.  **Environment Setup:**
+
+    Create a `.env` file in the root directory and add your database connection strings:
+
+    ```env
+    # Connect to Supabase via connection pooling
+    DATABASE_URL="postgresql://postgres.[ref]:[password]@aws-0-region.pooler.supabase.com:6543/postgres?pgbouncer=true"
+
+    # Direct connection to the database (Required for migrations)
+    DIRECT_URL="postgresql://postgres.[ref]:[password]@aws-0-region.pooler.supabase.com:5432/postgres"
+    ```
+
+4.  **Database Setup:**
+
+    Push the schema to your database and seed it with initial data (creates default user and events).
+
+    ```bash
+    # Push schema
+    npx prisma db push
+
+    # Seed database
+    npx prisma db seed
+    ```
+
+    > **Note:** The seed script creates a default user `upasana` with email `admin@cal.com`.
+
+5.  **Run the Application:**
+
+    ```bash
+    npm run dev
+    ```
+
+    Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+## 🚀 Deployment
+
+The easiest way to deploy is using [Vercel](https://vercel.com/).
+
+1.  Push your code to a GitHub repository.
+2.  Import the project into Vercel.
+3.  Add the `DATABASE_URL` and `DIRECT_URL` environment variables in the Vercel dashboard.
+4.  Deploy!
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
